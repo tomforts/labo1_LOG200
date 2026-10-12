@@ -12,7 +12,9 @@ public class Test {
 
         CPUPlayer cpu = new CPUPlayer(Mark.X);
 
-        ArrayList<Move> result = cpu.getNextMoveAB(board);
+        // ArrayList<Move> result = cpu.getNextMoveAB(board);
+        ArrayList<Move> result = cpu.getNextMoveMinMax(board);
+        System.out.println("Configuration du test A (minmax):");
 
         System.out.println("Coups retournés :");
         for (Move move : result) {

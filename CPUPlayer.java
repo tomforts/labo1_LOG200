@@ -29,10 +29,57 @@ class CPUPlayer
     // ont le même score.
     public ArrayList<Move> getNextMoveMinMax(Board board)
     {
-        //haut en bas - gauche a droite
-        //évaluer sur le nombre de noeud explorés
+        // haut en bas - gauche a droite
+        // évaluer sur le nombre de noeud explorés
+
         numExploredNodes = 0;
-        return null;
+        ArrayList<Move> bestMoves = new ArrayList<>();
+        int bestScore = Integer.MIN_VALUE;
+        ArrayList<Move> moves = board.getMoves();
+        for (Move m : moves) {
+            board.play(m, mark);
+            int score = scoreMinMax(board, (mark == Mark.X) ? Mark.O : Mark.X, false);
+            board.unplay(m);
+
+            if (score >= bestScore) {
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestMoves.clear();
+                }
+                bestMoves.add(m);
+            }
+        }
+        return bestMoves;
+    }
+
+    private int scoreMinMax(Board board, Mark current, boolean maximizing){
+        numExploredNodes++;
+        int eval = board.evaluate(mark);
+        if (eval != 0 || board.isBoardFinal()) {
+            return eval;
+        }
+        Mark opposite = (current == Mark.X) ? Mark.O : Mark.X;
+        ArrayList<Move> moves = board.getMoves();
+        // Following code could be optimized but left like this for now.
+        if (maximizing) {
+            int maxEval = Integer.MIN_VALUE;
+            for (Move m : moves) {
+                board.play(m, current);
+                int score = scoreMinMax(board, opposite, false);
+                board.unplay(m);
+                maxEval = Math.max(maxEval, score);
+            }
+            return maxEval;
+        } else {
+            int minEval = Integer.MAX_VALUE;
+            for (Move m : moves) {
+                board.play(m, current);
+                int score = scoreMinMax(board, opposite, true);
+                board.unplay(m);
+                minEval = Math.min(minEval, score);
+            }
+            return minEval;
+        }
     }
 
     // Retourne la liste des coups possibles.  Cette liste contient
