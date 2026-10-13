@@ -9,6 +9,9 @@ public class Test {
         board.play(new Move(0, 1), Mark.O);
         board.play(new Move(1, 0), Mark.X);
         board.play(new Move(1, 1), Mark.O);
+        // x o #
+        // x o #
+        // # # #
 
         CPUPlayer cpu = new CPUPlayer(Mark.X);
 

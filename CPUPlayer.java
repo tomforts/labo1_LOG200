@@ -36,6 +36,9 @@ class CPUPlayer
         ArrayList<Move> bestMoves = new ArrayList<>();
         int bestScore = Integer.MIN_VALUE;
         ArrayList<Move> moves = board.getMoves();
+        if (board.isBoardFinal()) {
+            return bestMoves;
+        }
         for (Move m : moves) {
             board.play(m, mark);
             int score = scoreMinMax(board, (mark == Mark.X) ? Mark.O : Mark.X, false);
